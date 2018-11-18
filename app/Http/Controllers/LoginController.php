@@ -9,7 +9,7 @@ use JWTAuth;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 
-class APILoginController extends Controller
+class LoginController extends Controller
 {
     public function login(Request $request)
     {

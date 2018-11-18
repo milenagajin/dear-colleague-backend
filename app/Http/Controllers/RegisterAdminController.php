@@ -9,7 +9,7 @@ use JWTAuth;
 use Validator;
 use Response;
 
-class APIRegisterController extends Controller
+class RegisterAdminController extends Controller
 {
     public function register(Request $request)
     {
@@ -21,10 +21,12 @@ class APIRegisterController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors());
         }
+        //postavljam admin:true jer samo onaj 
         User::create([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
             'password' => bcrypt($request->get('password')),
+            'admin' => '1'
         ]);
         $user = User::first();
         $token = JWTAuth::fromUser($user);
