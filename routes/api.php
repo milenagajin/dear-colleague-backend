@@ -17,5 +17,12 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
+//Login - Register
 Route::post('user/register', 'RegisterAdminController@register');
 Route::post('user/login', 'LoginController@login');
+//campaign
+Route::get('campaigns/{id}', 'CampaignController@show');
+Route::get('campaigns', 'CampaignController@index');
+Route::post('campaigns', 'CampaignController@store');
+Route::put('campaigns/edit/{id}', 'CampaignController@update');
+Route::delete('campaigns/{id}', 'CampaignController@destroy');

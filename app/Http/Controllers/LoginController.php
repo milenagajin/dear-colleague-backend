@@ -13,12 +13,14 @@ class LoginController extends Controller
 {
     public function login(Request $request)
     {
+        
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255',
             'password'=> 'required'
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors());
+            info('usla u fails');
         }
         $credentials = $request->only('email', 'password');
         try {
