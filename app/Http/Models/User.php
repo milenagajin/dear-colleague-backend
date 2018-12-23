@@ -18,4 +18,14 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Campaign')
           ->withTimestamps();
     }
+
+    public function notesToUser()
+    {
+        return $this->hasMany('App\Note', 'to_user');
+    }
+
+    public function notesFromUser()
+    {
+        return $this->hasMany('App\Note', 'from_user');
+    }
 }

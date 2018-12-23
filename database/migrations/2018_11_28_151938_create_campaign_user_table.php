@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserCampaignTable extends Migration
+class CreateCampaignUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,17 @@ class CreateUserCampaignTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_campaign', function (Blueprint $table) {
-            $table->integer('user_id')->unsigned();
-            $table->integer('campaign_id')->unsigned();
+        Schema::create('campaign_user', function (Blueprint $table) {
+            $table->integer('campaign_id')->unsigned()->nullable();
+            $table->integer('user_id')->unsigned()->nullable();
             
+            $table->foreign('campaign_id')->references('id')
+            ->on('campaigns')->onDelete('cascade');
             $table->foreign('user_id')->references('id')
                 ->on('users')->onDelete('cascade');
-            $table->foreign('campaign_id')->references('id')
-                ->on('campaigns')->onDelete('cascade');
     
             $table->timestamps();
         });
-
-       
     }
 
     /**
@@ -35,6 +33,6 @@ class CreateUserCampaignTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_campaign');
+        Schema::dropIfExists('campaign_user');
     }
 }

@@ -1,22 +1,35 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Response;
-use Illuminate\Http\Request;
-use App\Campaign;
 
-class CampaignController extends Controller
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Note;
+use App\User;
+
+class NoteController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function notesToUser($toUser)
     {
-        $campaigns = Campaign::all()->toArray();
-        return response()->json($campaigns);
+        // $notes = DB::table('notes')->where('to_user', $toUser)->get();
+        $notes = User::find($toUser)->notesToUser;
+        info($notes);
+        return response()->json($notes);
     }
+
+    public function notesFromUser($fromUser)
+    {
+        // $notes = DB::table('notes')->where('to_user', $toUser)->get();
+        $notes = User::find($fromUser)->notesFromUser;
+        info($notes);
+        return response()->json($notes);
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -25,8 +38,7 @@ class CampaignController extends Controller
      */
     public function create()
     {
-        // 
-
+        //
     }
 
     /**
@@ -37,13 +49,13 @@ class CampaignController extends Controller
      */
     public function store(Request $request)
     {
-        $campaign = new Campaign();
-        $campaign->name = $request->input('name');
-        $campaign->company_name = $request->input('company_name');
+        $note = new Note();
+        $note->text = $request->input('text');
+        $note->to_user = $request->input('to_user');
+        $note->from_user = $request->input('from_user');
        
-        if($campaign->save())
-            return $campaign;
-        
+        if($note->save())
+            return $note;
     }
 
     /**
@@ -54,8 +66,7 @@ class CampaignController extends Controller
      */
     public function show($id)
     {
-        $campaign = Campaign::findOrFail($id);
-        return response()->json($campaign);
+        //
     }
 
     /**
@@ -77,17 +88,8 @@ class CampaignController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {   $reqId = $request->input('id');
-        if($reqId != $id){
-            return response('Id from URL is not the same as one in edited Campaign!', 400);
-        }
-        $campaign = Campaign::findOrFail($id);
-        $campaign->name = $request->input('name');
-        $campaign->company_name = $request->input('company_name');
-     
-        if($campaign->save()){
-            return $campaign;
-        }
+    {
+        //
     }
 
     /**
@@ -98,7 +100,6 @@ class CampaignController extends Controller
      */
     public function destroy($id)
     {
-        $campaign = Campaign::findOrFail($id);
-        $campaign->delete();
+        //
     }
 }

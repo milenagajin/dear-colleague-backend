@@ -13,7 +13,7 @@ class LoginController extends Controller
 {
     public function login(Request $request)
     {
-        
+        info($request);
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255',
             'password'=> 'required'
@@ -30,6 +30,7 @@ class LoginController extends Controller
         } catch (JWTException $e) {
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
+        $isAdmin = DB::table('users')->where('email', '')->value('email');
         return response()->json(compact('token'));
     }
 }

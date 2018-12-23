@@ -1,32 +1,35 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Response;
+
 use Illuminate\Http\Request;
+use App\User;
 use App\Campaign;
 
-class CampaignController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $campaigns = Campaign::all()->toArray();
-        return response()->json($campaigns);
-    }
+    //geting users from campaign with parameter $id
+   
+    public function index($id)
+    {   
+        
+        $campaignUsers = Campaign::with('users')->find($id)->users;
+        return response()->json($campaignUsers);
+    }   
 
-    /**
+    /** 
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        // 
-
+        //
     }
 
     /**
@@ -37,13 +40,16 @@ class CampaignController extends Controller
      */
     public function store(Request $request)
     {
-        $campaign = new Campaign();
-        $campaign->name = $request->input('name');
-        $campaign->company_name = $request->input('company_name');
-       
-        if($campaign->save())
-            return $campaign;
-        
+        info($request);
+        $user = new User();
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->admin = false;
+            
+        if($user->save()){
+            $user->campaigns()->attach($request->input('campaignId'));
+            return $user;
+        }
     }
 
     /**
@@ -54,8 +60,8 @@ class CampaignController extends Controller
      */
     public function show($id)
     {
-        $campaign = Campaign::findOrFail($id);
-        return response()->json($campaign);
+        $user = User::findOrFail($id);
+        return response()->json($user);
     }
 
     /**
@@ -77,16 +83,18 @@ class CampaignController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {   $reqId = $request->input('id');
+    {
+        info('update');
+        $reqId = $request->input('id');
         if($reqId != $id){
-            return response('Id from URL is not the same as one in edited Campaign!', 400);
+            return response('Id from URL is not the same as one in edited User!', 400);
         }
-        $campaign = Campaign::findOrFail($id);
-        $campaign->name = $request->input('name');
-        $campaign->company_name = $request->input('company_name');
-     
-        if($campaign->save()){
-            return $campaign;
+        $user = User::findOrFail($id);
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        
+        if($user->save()){
+            return $user;
         }
     }
 
@@ -98,7 +106,7 @@ class CampaignController extends Controller
      */
     public function destroy($id)
     {
-        $campaign = Campaign::findOrFail($id);
-        $campaign->delete();
+        $user = User::findOrFail($id);
+        $user -> delete();
     }
 }
