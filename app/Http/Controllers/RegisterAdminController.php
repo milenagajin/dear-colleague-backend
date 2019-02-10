@@ -22,14 +22,14 @@ class RegisterAdminController extends Controller
             return response()->json($validator->errors());
         }
         //postavljam admin:true jer samo onaj 
-        User::create([
+        $user = User::create([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
             'password' => bcrypt($request->get('password')),
             'admin' => '1'
         ]);
-        $user = User::first();
         $token = JWTAuth::fromUser($user);
-        return Response::json(compact('token'));
+
+            return Response::json(compact('token', 'user'));
     }
 }

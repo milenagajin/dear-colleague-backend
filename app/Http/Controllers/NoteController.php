@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Note;
 use App\User;
+use App\Campaign;
 
 class NoteController extends Controller
 {
@@ -16,18 +17,15 @@ class NoteController extends Controller
      */
     public function notesToUser($toUser)
     {
-        // $notes = DB::table('notes')->where('to_user', $toUser)->get();
         $notes = User::find($toUser)->notesToUser;
-        info($notes);
+        
         return response()->json($notes);
     }
 
-    public function notesFromUser($fromUser)
+    public function notesFromUser($campaignId, $userId)
     {
-        // $notes = DB::table('notes')->where('to_user', $toUser)->get();
-        $notes = User::find($fromUser)->notesFromUser;
-        info($notes);
-        return response()->json($notes);
+        $notes = User::find($userId)->notesFromUser->where('campaign_id', '=', $campaignId);
+         return response()->json($notes);
     }
 
 
@@ -53,6 +51,7 @@ class NoteController extends Controller
         $note->text = $request->input('text');
         $note->to_user = $request->input('to_user');
         $note->from_user = $request->input('from_user');
+        $note->campaign_id = $request->input('campaign_id');
        
         if($note->save())
             return $note;

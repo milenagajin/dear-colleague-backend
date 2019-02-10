@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use Validator;
 use JWTFactory;
 use JWTAuth;
-use App\User;
+use App\Http\Resources\User as UserResource;
 use Illuminate\Support\Facades\Auth;
+use App\User;
+use Illuminate\Support\Facades\DB;
 
 class LoginController extends Controller
 {
@@ -20,7 +22,6 @@ class LoginController extends Controller
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors());
-            info('usla u fails');
         }
         $credentials = $request->only('email', 'password');
         try {
@@ -30,7 +31,9 @@ class LoginController extends Controller
         } catch (JWTException $e) {
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
-        $isAdmin = DB::table('users')->where('email', '')->value('email');
-        return response()->json(compact('token'));
+        
+        $query = DB::table('users')->where('email', $request->input('email'))->first();
+        $user = new UserResource($query);
+        return response()->json(compact('token', 'user'));
     }
 }

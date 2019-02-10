@@ -17,4 +17,8 @@ class Note extends Model
     public function fromUser(){
         $this->belongsTo('App\User', 'from_user');
     }
+
+    public function campaign(){
+        return $this->belongsTo('App\Campaign');
+    }
 }

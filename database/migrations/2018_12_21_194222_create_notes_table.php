@@ -18,13 +18,15 @@ class CreateNotesTable extends Migration
             $table->text('text');
             $table->integer('from_user')->unsigned();
             $table->integer('to_user')->unsigned();
-          
+            $table->integer('campaign_id')->unsigned();
+
             $table->foreign('from_user')->references('id')
                 ->on('users')->onDelete('cascade');
             $table->foreign('to_user')->references('id')
                 ->on('users')->onDelete('cascade');
-          
-            $table->unique(['id','from_user', 'to_user']);
+            $table->foreign('campaign_id')->references('id')
+                ->on('campaigns')->onDelete('cascade');
+            $table->unique(['id','from_user', 'to_user', 'campaign_id']);
             $table->timestamps();
         });
     }

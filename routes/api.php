@@ -33,6 +33,6 @@ Route::post('users', 'UserController@store');
 Route::put('users/edit/{id}', 'UserController@update');
 Route::delete('users/{id}', 'UserController@destroy');
 //note
+Route::get('campaign/{campaignId}/sent-notes/user/{userId}', 'NoteController@notesFromUser');
 Route::post('notes', 'NoteController@store');
 Route::get('user/{id}/notes', 'NoteController@notesToUser');
-Route::get('user/{id}/sent-notes', 'NoteController@notesFromUser');

@@ -19,6 +19,10 @@ class UserController extends Controller
     {   
         
         $campaignUsers = Campaign::with('users')->find($id)->users;
+       
+        foreach($campaignUsers as $user){
+            $user->votes = User::find($user->id)->notesToUser->count();
+        }
         return response()->json($campaignUsers);
     }   
 
@@ -84,7 +88,6 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        info('update');
         $reqId = $request->input('id');
         if($reqId != $id){
             return response('Id from URL is not the same as one in edited User!', 400);
