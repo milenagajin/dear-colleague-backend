@@ -30,6 +30,6 @@ class RegisterAdminController extends Controller
         ]);
         $token = JWTAuth::fromUser($user);
 
-            return Response::json(compact('token', 'user'));
+        return Response::json(compact('token', 'user'));
     }
 }

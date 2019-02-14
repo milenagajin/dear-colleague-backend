@@ -34,12 +34,15 @@ class RegisterInvatation extends Mailable
      */
     public function build()
     {
+      
         return $this->subject('Your magic login link')->view('auth.link')->with([
             'link' => $this->buildLink()
         ]);
     }
 
     public function buildLink(){
-        return url("campaigns/" . $this->campaignId .  "/user?invatation_token=" . $this->token . "&email=" . $this->user->email);
+        $url =  url("campaigns/" . $this->campaignId .  "/user?invatation_token=" . $this->token . "&email=" . $this->user->email);
+        info($url);
+        return $url;
     }
 }
