@@ -1,21 +1,21 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+
 use Validator;
 use JWTFactory;
 use JWTAuth;
-use App\Http\Resources\User as UserResource;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\User;
 use Illuminate\Support\Facades\DB;
+use App\User;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\User as UserResource;
 
 class LoginController extends Controller
 {
     public function login(Request $request)
     {
-        info($request);
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255',
             'password'=> 'required'

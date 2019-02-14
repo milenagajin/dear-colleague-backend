@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
-
+// use App\Http\
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -22,7 +22,7 @@ Route::post('user/login/magic-link', 'MagicLinkController@sendToken');
 Route::get('user/login/validate-token', 'MagicLinkController@validateToken');
 //campaign
 Route::get('campaigns/{id}', 'CampaignController@show');
-Route::get('campaigns', 'CampaignController@index');
+Route::get('campaigns', 'CampaignController@index')->middleware('auth.user');
 Route::post('campaigns', 'CampaignController@store');
 Route::put('campaigns/edit/{id}', 'CampaignController@update');
 Route::delete('campaigns/{id}', 'CampaignController@destroy');
