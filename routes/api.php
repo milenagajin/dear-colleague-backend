@@ -18,11 +18,14 @@ use Illuminate\Http\Request;
 //Login - Register
 Route::post('user/register', 'RegisterAdminController@register');
 Route::post('user/login', 'LoginController@login');
+
+Route::group(['middleware' => ['auth.user']], function () {
+
 Route::post('user/login/magic-link', 'MagicLinkController@sendToken');
 Route::get('user/login/validate-token', 'MagicLinkController@validateToken');
 //campaign
 Route::get('campaigns/{id}', 'CampaignController@show');
-Route::get('campaigns', 'CampaignController@index')->middleware('auth.user');
+Route::get('campaigns', 'CampaignController@index');
 Route::post('campaigns', 'CampaignController@store');
 Route::put('campaigns/edit/{id}', 'CampaignController@update');
 Route::delete('campaigns/{id}', 'CampaignController@destroy');
@@ -36,3 +39,5 @@ Route::delete('users/{id}', 'UserController@destroy');
 Route::get('campaign/{campaignId}/sent-notes/user/{userId}', 'NoteController@notesFromUser');
 Route::post('notes', 'NoteController@store');
 Route::get('user/{id}/notes', 'NoteController@notesToUser');
+
+});

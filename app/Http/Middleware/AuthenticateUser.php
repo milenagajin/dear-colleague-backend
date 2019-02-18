@@ -15,7 +15,7 @@ class AuthenticateUser
      */
     public function handle($request, Closure $next)
     {  
-       
+       info('usla');
         try {
             if (!$user = JWTAuth::parseToken()->authenticate()) {
                 return response()->json(['user_not_found'], 404);
